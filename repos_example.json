@@ -1,0 +1,10 @@
+[
+  {
+    "name": "project-sync",
+    "path": "/absolute/path/to/project-sync"
+  },
+  {
+    "name": "another-repo",
+    "path": "/absolute/path/to/another-repo"
+  }
+]

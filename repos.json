@@ -1,0 +1,30 @@
+[
+  {
+    "name": "llm",
+    "path": "/Users/benc/projects/llm/src"
+  },
+  {
+    "name": "webui",
+    "path": "/Users/benc/projects/webui/src"
+  },
+  {
+    "name": "configuration",
+    "path": "/Users/benc/projects/configuration/src"
+  },
+  {
+    "name": "ycrc",
+    "path": "/Users/benc/projects/ycrc/src"
+  },
+  {
+    "name": "ycrc_docs",
+    "path": "/Users/benc/projects/ycrc_docs/src"
+  },
+  {
+    "name": "tickets",
+    "path": "/Users/benc/projects/tickets/src"
+  },
+  {
+    "name": "obsidian",
+    "path": "/Users/benc/Documents/Obsidian Vault"
+  }
+]
