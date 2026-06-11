@@ -74,7 +74,27 @@ If `git pull` or `git push` fails from the command line, the script will fail th
 
 ## Running the Script
 
-Run the script from the project root:
+Run the command wrapper from the project root:
+
+```bash
+./project_sync
+```
+
+To make the command available from any directory, link the wrapper script into `~/bin`:
+
+```bash
+ln -s /path/to/project_sync/project_sync ~/bin/project_sync
+```
+
+Then run:
+
+```bash
+project_sync
+```
+
+The wrapper loads environment variables from `.env` in the project root if that file exists, then runs `project_sync.sh`. The shell script executes the Python application with the project root `repos.json` file.
+
+You can still run the Python script directly from the project root:
 
 ```bash
 python3 src/project_sync.py
@@ -83,7 +103,7 @@ python3 src/project_sync.py
 To use a different config file:
 
 ```bash
-python3 src/project_sync.py --config /path/to/repos.json
+project_sync --config /path/to/repos.json
 ```
 
 ## Interactive Flow

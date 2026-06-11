@@ -67,3 +67,7 @@ After all repos are processed
 	- whether there were local changes
 	- whether there were changes pulled from github
 	- if changes were committed or skipped
+
+# Usage
+
+- The code should run using the command 'project_sync'. Create a wrapper script that loads the environment and then executes project_sync.sh. I will link to this command using ~/bin so that I can execute this command from any directory.
