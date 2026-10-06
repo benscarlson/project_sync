@@ -1,4 +1,4 @@
-# Git Project Sync Usage
+# Reposync Usage
 
 ## Overview
 
@@ -19,11 +19,11 @@ Create a file named `repos.json` in the project root. The file should contain a 
 ```json
 [
   {
-    "name": "project-a",
+    "name": "your-org/project-a",
     "path": "/absolute/path/to/project-a"
   },
   {
-    "name": "project-b",
+    "name": "your-org/project-b",
     "path": "/absolute/path/to/project-b"
   }
 ]
@@ -77,19 +77,21 @@ If `git pull` or `git push` fails from the command line, the script will fail th
 Run the command wrapper from the project root:
 
 ```bash
-./project_sync
+./reposync
 ```
 
 To make the command available from any directory, link the wrapper script into `~/bin`:
 
 ```bash
-ln -s /path/to/project_sync/project_sync ~/bin/project_sync
+ln -s /path/to/project_sync/reposync ~/bin/reposync
 ```
 
 Then run:
 
 ```bash
-project_sync
+reposync
+# Equivalent explicit command:
+reposync update
 ```
 
 The wrapper loads environment variables from `.env` in the project root if that file exists, then runs `project_sync.sh`. The shell script executes the Python application with the project root `repos.json` file.
@@ -103,10 +105,57 @@ python3 src/project_sync.py
 To use a different config file:
 
 ```bash
-project_sync --config /path/to/repos.json
+reposync --config /path/to/repos.json
 ```
 
+## Adding and Removing Repositories
+
+```bash
+reposync add ~/projects/project-a
+reposync remove your-org/project-a
+```
+
+`add` accepts an absolute path, a path beginning with `~`, or a path relative to
+the current working directory. For example, when running from `~/projects`,
+`reposync add project-a` adds `~/projects/project-a`. The config stores the
+resolved absolute path and uses the GitHub `owner/repository` name from local
+remotes, preferring `origin`. New entries are inserted alphabetically by name.
+Quote paths containing spaces. For repositories without a GitHub remote, the
+directory name is used; supply `--path` to set a fallback name:
+
+```bash
+reposync add "~/Documents/Obsidian Vault"
+reposync add notes --path "$HOME/Documents/Obsidian Vault"
+reposync add project-a --path /path/to/project-a --config /path/to/repos.json
+```
+
+Repository paths resolve from the current directory even with a custom config
+or a symlinked wrapper. Adding requires an existing
+local Git repository and rejects duplicate names or paths. It creates the config
+if it is missing. Removing deletes only the matching config entry; it leaves the
+repository on disk. Both commands preserve other entries and do not synchronize
+repositories. Removing also works when a configured repository no longer exists.
+
+The original `project_sync` wrapper remains available for compatibility.
+
+## Listing Repositories
+
+```bash
+reposync list
+reposync list --config /path/to/repos.json
+```
+
+The command prints a table with the GitHub repository name (for example,
+`benscarlson/myrepo`) and the full absolute local path, without a date or time.
+Rows are sorted alphabetically by GitHub name. It reads local Git remotes, preferring `origin`, and supports HTTPS and SSH
+GitHub URLs. Entries without a GitHub remote show `No GitHub remote`; missing
+or unreadable repositories show `Unavailable`. Every configured entry remains
+in the table. Listing does not change the config or synchronize repositories.
+
 ## Interactive Flow
+
+Repositories are processed alphabetically by `owner/repository`. The summary
+table uses the same order and includes the owner prefix.
 
 For each repository:
 
@@ -144,6 +193,10 @@ After all repositories are processed successfully, the script prints a small sum
 - whether each repository had local changes
 - whether `git pull` brought in remote changes
 - whether local changes were committed or skipped
+
+Immediately after the update summary table, `reposync` and `reposync update`
+print the local date and time using a 24-hour clock, for example
+`Tuesday, October 6, 2026 17:00`. `reposync list` prints no date or time.
 
 ## Notes
 

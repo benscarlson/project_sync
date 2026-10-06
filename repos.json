@@ -1,43 +1,50 @@
 [
   {
-    "name": "llm",
-    "path": "/Users/benc/projects/llm/src"
-  },
-  {
-    "name": "webui",
-    "path": "/Users/benc/projects/webui/src"
-  },
-  {
-    "name": "configuration",
-    "path": "/Users/benc/projects/configuration/src"
-  },
-  {
-    "name": "ycrc",
-    "path": "/Users/benc/projects/ycrc/src"
-  },
-  {
-    "name": "ycrc_docs",
-    "path": "/Users/benc/projects/ycrc_docs/src"
-  },
-  {
-    "name": "tickets",
-    "path": "/Users/benc/projects/tickets/src"
-  },
-  {
-    "name": "obsidian",
-    "path": "/Users/benc/Documents/Obsidian Vault"
-  },
-  {
-    "name": "claude-mod-workspace",
+    "name": "benscarlson/claude-mod-workspace",
     "path": "/Users/benc/projects/claude-mod-workspace"
   },
   {
-    "name": "claude-mod",
+    "name": "benscarlson/configuration",
+    "path": "/Users/benc/projects/configuration/src"
+  },
+  {
+    "name": "benscarlson/easy-agent-evals",
+    "path": "/Users/benc/projects/easy-agent-evals-workspace/repos/easy-agent-evals"
+  },
+  {
+    "name": "benscarlson/easy-agent-evals-workspace",
+    "path": "/Users/benc/projects/easy-agent-evals-workspace"
+  },
+  {
+    "name": "benscarlson/llm",
+    "path": "/Users/benc/projects/llm/src"
+  },
+  {
+    "name": "benscarlson/obsidian",
+    "path": "/Users/benc/Documents/Obsidian Vault"
+  },
+  {
+    "name": "benscarlson/tickets",
+    "path": "/Users/benc/projects/tickets/src"
+  },
+  {
+    "name": "benscarlson/yale-ycrc-skills-workspace",
+    "path": "/Users/benc/projects/yale-ycrc-skills-workspace"
+  },
+  {
+    "name": "benscarlson/ycrc",
+    "path": "/Users/benc/projects/ycrc/src"
+  },
+  {
+    "name": "benscarlson/ycrc_docs",
+    "path": "/Users/benc/projects/ycrc_docs/src"
+  },
+  {
+    "name": "ycrc/claude-mod",
     "path": "/Users/benc/projects/claude-mod-workspace/repos/claude-mod"
   },
   {
-    "name": "yale-ycrc-skills-workspace",
-    "path": "/Users/benc/projects/yale-ycrc-skills-workspace"
+    "name": "ycrc/webui",
+    "path": "/Users/benc/projects/webui/src"
   }
-
 ]

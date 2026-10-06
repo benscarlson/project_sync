@@ -1,10 +1,10 @@
 [
   {
-    "name": "project-sync",
-    "path": "/absolute/path/to/project-sync"
+    "name": "your-org/another-repo",
+    "path": "/absolute/path/to/another-repo"
   },
   {
-    "name": "another-repo",
-    "path": "/absolute/path/to/another-repo"
+    "name": "your-org/project-sync",
+    "path": "/absolute/path/to/project-sync"
   }
 ]

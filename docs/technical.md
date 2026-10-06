@@ -2,13 +2,13 @@
 
 ## Purpose
 
-`project_sync.py` is a small command-line tool that applies a consistent git workflow to a list of local repositories defined in a config file.
+`reposync` is a small command-line tool that applies a consistent git workflow to a list of local repositories defined in a config file. Its Python implementation is `project_sync.py`.
 
 ## Architecture
 
 The implementation lives in [src/project_sync.py](/Users/benc/projects/project_sync/src/project_sync.py) and is organized around a few small responsibilities:
 
-- Argument parsing for the optional `--config` flag
+- Argument parsing for `update` (the default), `add`, `remove`, and `list`, with optional `--config` and an `add`-only `--path` flag
 - Repository config loading and validation
 - Git command execution with consistent error handling
 - Interactive prompting for staging and commit messages
@@ -18,20 +18,34 @@ The implementation lives in [src/project_sync.py](/Users/benc/projects/project_s
 
 The script expects a JSON file named `repos.json` by default. That file contains an array of objects with these fields:
 
-- `name`: display name used in prompts and errors
+- `name`: GitHub `owner/repository` name used in prompts, ordering, and summaries
 - `path`: absolute or user-relative path to a local git repository
 
-Validation performed during startup:
+Config structure validation:
 
 - The config file must exist
 - The config file must be valid JSON
 - The top-level JSON value must be an array
 - Every entry must include non-empty `name` and `path` values
-- Every `path` must exist and contain a `.git` directory
+
+During synchronization, every `path` must also exist and contain a `.git` entry
+(a directory or a worktree file). Config edits validate structure without requiring
+existing entries to be available. `add` validates the new repository, rejects
+duplicate names and paths, and inserts an entry alphabetically by name. `remove` deletes entries with
+the requested name. Other fields and entries are preserved.
+
+The positional argument to `add` is a repository path: `~` is expanded and
+relative paths resolve from the caller's current directory. The resolved path is
+stored with its GitHub `owner/repository` name, preferring the `origin` remote.
+Without a GitHub remote, the directory name (or explicit `--path` name) is used.
 
 If validation fails, the script exits with a non-zero status and prints the error to stderr.
 
 ## Runtime Flow
+
+Repositories are sorted alphabetically by GitHub `owner/repository` before
+processing; older configs also resolve owner prefixes from local remotes. Summary
+rows are sorted independently by name.
 
 For each configured repository:
 
@@ -46,7 +60,18 @@ For each configured repository:
 9. Stop execution if `git pull` fails
 10. Run `git push` if the pull succeeds
 
-After all repositories finish successfully, the script prints a summary table for the full run.
+After all repositories finish successfully, the script prints a summary table for the full run, followed by the local date and 24-hour time in the format `Tuesday, October 6, 2026 17:00`. This applies to both `reposync` and `reposync update`. Empty configs also produce a valid summary and timestamp.
+
+`reposync` resolves symlinks, loads the project `.env` if present, and invokes
+`project_sync.sh`, which defaults `--config` to the project's `repos.json`.
+`add` and `remove` return after editing the config without running Git sync.
+
+`list` loads the config and reads `git remote -v` locally for each available
+repository. It prefers GitHub fetch URLs on `origin`, then other remotes, and
+extracts `owner/repository` from HTTPS, SSH, or SCP-style URLs. The table contains
+every configured path sorted alphabetically by GitHub name, using status labels when GitHub metadata is unavailable.
+Both listing and sync summaries use `print_table()`. Sync summaries enable
+`include_time` to print the local date and `HH:MM`; listing prints only the table.
 
 ## Error Handling
 
@@ -76,7 +101,11 @@ Implementation notes:
 - `RepoConfig`: immutable repository config container
 - `RepoSummary`: immutable result container for final reporting
 - `SyncError`: workflow-level exception for controlled termination
-- `load_repos()`: parses and validates the config file
+- `load_config()`: parses and validates the config structure
+- `load_repos()`: loads config entries and validates local repositories for sync
+- `add_repo()` / `remove_repo()`: edit config entries
+- `list_repos()`: displays GitHub repository names and absolute local paths
+- `github_name_from_url()`: extracts the repository name from a GitHub remote URL
 - `run_git()`: shared git subprocess wrapper
 - `get_head_commit()`: reads the current repository `HEAD`
 - `print_status()`: runs and displays `git status --short`
