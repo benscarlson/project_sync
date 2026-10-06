@@ -26,5 +26,18 @@
   {
     "name": "obsidian",
     "path": "/Users/benc/Documents/Obsidian Vault"
+  },
+  {
+    "name": "claude-mod-workspace",
+    "path": "/Users/benc/projects/claude-mod-workspace"
+  },
+  {
+    "name": "claude-mod",
+    "path": "/Users/benc/projects/claude-mod-workspace/repos/claude-mod"
+  },
+  {
+    "name": "yale-ycrc-skills-workspace",
+    "path": "/Users/benc/projects/yale-ycrc-skills-workspace"
   }
+
 ]
